@@ -1,36 +1,86 @@
+```html
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Surat Apresiasi - Bang Calvin</title>
+    <title>Surat Buat Bang Calvin</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
     <style>
         .font-handwriting {
             font-family: 'Caveat', cursive;
         }
+
+        /* Background pola bintik-bintik subtle ala kanvas scrapbook */
+        .bg-scrapbook {
+            background-color: #020617;
+            background-image: radial-gradient(#1e293b 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        /* Polaroid Float Styling dengan efek wrapping */
+        .polaroid-float {
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.6), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
+            position: relative;
+            z-index: 20;
+        }
+
+        .polaroid-float:hover {
+            transform: scale(1.08) rotate(0deg) !important;
+            z-index: 30;
+            box-shadow: 0 20px 25px -5px rgba(59, 130, 246, 0.4), 0 8px 10px -6px rgba(59, 130, 246, 0.3);
+        }
+
+        /* Float Kiri & Kanan agar teks mengalir mengelilingi polaroid */
+        .float-polaroid-left {
+            float: left;
+            margin-right: 1.25rem;
+            margin-bottom: 1rem;
+            margin-top: 0.5rem;
+            clear: left;
+        }
+
+        .float-polaroid-right {
+            float: right;
+            margin-left: 1.25rem;
+            margin-bottom: 1rem;
+            margin-top: 0.5rem;
+            clear: right;
+        }
+
+        /* Tape / Selotip Hiasan Scrapbook */
+        .tape-effect {
+            position: absolute;
+            width: 60px;
+            height: 18px;
+            background-color: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            z-index: 25;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+        }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 font-sans min-h-screen py-10 px-4 md:py-16 flex flex-col items-center justify-center relative selection:bg-blue-500 selection:text-white">
+<body class="bg-scrapbook text-slate-100 font-sans min-h-screen py-6 px-3 sm:px-6 flex flex-col items-center justify-start relative selection:bg-blue-500 selection:text-white overflow-x-hidden">
 
     <!-- PEMUTAR MUSIK BULAT DI KANAN BAWAH -->
     <div class="fixed bottom-6 right-6 z-50">
-        <!-- Gantilah URL 'musik-anda.mp3' di bawah ini dengan nama file MP3 Anda -->
         <audio id="bgMusic" loop preload="auto">
             <source src="memoribaik.mp3" type="audio/mpeg">
             Browser Anda tidak mendukung elemen audio.
         </audio>
 
-        <button id="musicBtn" onclick="toggleMusic()" aria-label="Play Music" class="w-14 h-14 bg-blue-600 hover:bg-blue-500 border border-blue-400/40 text-white rounded-full backdrop-blur-md transition-all duration-300 shadow-lg shadow-blue-600/30 hover:shadow-blue-500/50 hover:scale-110 active:scale-95 flex items-center justify-center group relative">
+        <button id="musicBtn" onclick="toggleMusic()" aria-label="Play Music" class="w-14 h-14 bg-blue-600 hover:bg-blue-500 border border-blue-400/40 text-white rounded-full backdrop-blur-md transition-all duration-300 shadow-xl shadow-blue-600/40 hover:shadow-blue-500/60 hover:scale-110 active:scale-95 flex items-center justify-center group relative">
             
-            <!-- Tooltip saat diposisikan di atas tombol -->
-            <span id="tooltipText" class="absolute -top-10 right-0 bg-slate-900 border border-blue-500/30 text-blue-300 text-xs px-2.5 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap shadow-md">
-                Putar Musik
+            <span id="tooltipText" class="absolute -top-10 right-0 bg-slate-900 border border-blue-500/40 text-blue-300 text-xs px-3 py-1 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap shadow-lg font-medium">
+                Putar Musik 🎵
             </span>
 
             <!-- Icon Play -->
@@ -44,47 +94,174 @@
             </svg>
 
             <!-- Animasi Gelombang Suara ketika Musik Play -->
-            <span id="pingEffect" class="absolute inset-0 rounded-full bg-blue-400/20 animate-ping hidden"></span>
+            <span id="pingEffect" class="absolute inset-0 rounded-full bg-blue-400/30 animate-ping hidden"></span>
         </button>
     </div>
 
-    <!-- KONTEN SURAT UTAMA -->
-    <div class="max-w-2xl w-full mx-auto my-auto">
-        <article class="bg-slate-900/90 border border-blue-800/40 rounded-2xl p-6 md:p-10 shadow-2xl backdrop-blur-sm space-y-6">
+    <!-- CONTAINER UTAMA -->
+    <div class="max-w-3xl w-full mx-auto my-auto relative pt-2 pb-12">
+
+        <!-- KARTU SURAT UTAMA -->
+        <article class="w-full bg-slate-900/95 border border-blue-800/60 rounded-3xl p-5 sm:p-8 md:p-10 shadow-2xl backdrop-blur-xl relative z-10 my-2 overflow-hidden">
             
             <!-- Header Surat -->
-            <header class="border-b border-blue-800/30 pb-4">
-                <h1 class="text-2xl md:text-3xl font-bold text-blue-400 tracking-wide">
-                    Dear Bang Calvin,
+            <header class="border-b border-blue-800/40 pb-4 mb-6">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-blue-400 tracking-wide">
+                    Dear Bang Vincensius Calvin Andrean Saragih,
                 </h1>
             </header>
 
-            <!-- Isi Surat Paragraf 1 -->
-            <p class="text-slate-300 text-sm md:text-base leading-relaxed text-justify">
-                Tidak terasa waktu berjalan begitu cepat, dan begitu banyak momen maupun dinamika yang sudah kita lalui bersama selama ini. Jika saya melihat kembali perjalanan yang telah dilewati, bisa mengenal, belajar, serta bekerja sama secara langsung dengan Bang Calvin di OSIS adalah salah satu pengalaman yang paling berharga, bermakna, dan sangat berkesan bagi saya. Kerja bareng Bang Calvin itu rasanya selalu seru, penuh pembelajaran, dan menyenangkan. Abang bukan sekadar sosok ketua atau senior yang hanya memberi instruksi dan perintah, melainkan seorang pengayom yang sangat sabar dalam membimbing, mengajari, dan mengarahkan saya di setiap kesempatan. Kehadiran Abang selalu memberikan rasa tenang karena Bang Calvin adalah sosok abang yang sangat baik, bertanggung jawab, dan senantiasa bisa diandalkan dalam kondisi atau situasi apa pun.
-            </p>
+            <!-- KONTEN SURAT DENGAN 8 POLAROID SELANG-SELING TEKS WRAPPING -->
+            <div class="text-slate-200 text-xs sm:text-sm md:text-base leading-relaxed text-justify space-y-4">
 
-            <!-- Isi Surat Paragraf 2 -->
-            <p class="text-slate-300 text-sm md:text-base leading-relaxed text-justify">
-                Lewat surat ini, saya ingin menyampaikan rasa terima kasih yang sebesar-besarnya atas semua ilmu, waktu, arahan, pengorbanan, dan dedikasi yang telah Abang berikan kepada saya dan tim selama ini. Semua bimbingan dan pengalaman yang Abang bagikan tentu menjadi bekal yang sangat bernilai buat saya ke depannya. Pesan saya untuk Abang, tetaplah menjadi pribadi yang rendah hati, bijaksana, serta terus memberikan dampak positif dan menginspirasi banyak orang di mana pun Abang berada. Jangan pernah ragu dengan potensi yang Abang miliki, karena Abang adalah sosok yang luar biasa dan punya kepemimpinan yang hebat.
-            </p>
+                <!-- Polaroid 1 - Kanan Atas -->
+                <div class="polaroid-float float-polaroid-right -rotate-3 bg-slate-950 border border-blue-500/40 p-2 rounded-xl w-32 sm:w-40 md:w-48">
+                    <div class="tape-effect -top-2.5 left-1/2 -translate-x-1/2 -rotate-3"></div>
+                    <div class="aspect-square bg-slate-800 rounded-lg overflow-hidden mb-1 relative">
+                        <img id="img-polaroid-1" src="https://placehold.co/400x400/1e293b/60a5fa?text=Foto+1" alt="Foto 1" class="w-full h-full object-cover">
+                    </div>
+                    <p id="caption-polaroid-1" class="font-handwriting text-center text-blue-300 text-xs sm:text-sm truncate">Momen Pertama 📸</p>
+                </div>
 
-            <!-- Isi Surat Paragraf 3 -->
-            <p class="text-slate-300 text-sm md:text-base leading-relaxed text-justify">
-                Dari lubuk hati yang paling dalam, saya mendoakan yang terbaik untuk setiap langkah dan perjuangan Abang selanjutnya, khususnya di dunia pendidikan. Semoga Bang Calvin selalu diberikan kesehatan, kekuatan, serta kelancaran dan kemudahan oleh Tuhan dalam menempuh jenjang pendidikan yang lebih tinggi. Saya sangat berharap dan mendoakan agar seluruh target, impian, dan cita-cita besar Abang—termasuk langkah Abang menuju universitas impian (<span class="text-blue-400 font-semibold underline decoration-blue-500/50">Vincensius ITB '27</span>)—bisa terwujud dengan hasil yang paling memuaskan. Terima kasih atas segalanya ya Bang, sukses selalu untuk masa depan dan perjalanan selanjutnya. See you on top, Bang Calvin!
-            </p>
+                <p>
+                    Tidak terasa waktu berjalan begitu cepat, dan begitu banyak momen maupun dinamika yang sudah kita lalui bersama selama ini. Jika saya melihat kembali perjalanan yang telah dilewati, bisa mengenal, belajar, serta bekerja sama secara langsung dengan Bang Calvin di OSIS adalah salah satu pengalaman yang paling berharga, bermakna, dan sangat berkesan bagi saya.
+                </p>
+
+                <!-- Polaroid 2 - Kiri Tengah 1 -->
+                <div class="polaroid-float float-polaroid-left rotate-3 bg-slate-950 border border-blue-500/40 p-2 rounded-xl w-32 sm:w-40 md:w-48">
+                    <div class="tape-effect -top-2.5 left-1/2 -translate-x-1/2 rotate-2"></div>
+                    <div class="aspect-square bg-slate-800 rounded-lg overflow-hidden mb-1 relative">
+                        <img id="img-polaroid-2" src="https://placehold.co/400x400/1e293b/60a5fa?text=Foto+2" alt="Foto 2" class="w-full h-full object-cover">
+                    </div>
+                    <p id="caption-polaroid-2" class="font-handwriting text-center text-blue-300 text-xs sm:text-sm truncate">Diskusi Proker 📝</p>
+                </div>
+
+                <p>
+                    Kerja bareng Bang Calvin itu rasanya selalu seru, penuh pembelajaran, dan menyenangkan. Abang bukan sekadar sosok ketua atau senior yang hanya memberi instruksi dan perintah, melainkan seorang pengayom yang sangat sabar dalam membimbing, mengajari, dan mengarahkan saya di setiap kesempatan. Kehadiran Abang selalu memberikan rasa tenang karena Bang Calvin adalah sosok abang yang sangat baik, bertanggung jawab, dan senantiasa bisa diandalkan dalam kondisi atau situasi apa pun.
+                </p>
+
+                <!-- Polaroid 3 - Kanan Tengah 1 -->
+                <div class="polaroid-float float-polaroid-right -rotate-2 bg-slate-950 border border-blue-500/40 p-2 rounded-xl w-32 sm:w-40 md:w-48">
+                    <div class="tape-effect -top-2.5 left-1/2 -translate-x-1/2 -rotate-2"></div>
+                    <div class="aspect-square bg-slate-800 rounded-lg overflow-hidden mb-1 relative">
+                        <img id="img-polaroid-3" src="https://placehold.co/400x400/1e293b/60a5fa?text=Foto+3" alt="Foto 3" class="w-full h-full object-cover">
+                    </div>
+                    <p id="caption-polaroid-3" class="font-handwriting text-center text-blue-300 text-xs sm:text-sm truncate">Rapat Tim ✨</p>
+                </div>
+
+                <p>
+                    Lewat surat ini, saya ingin menyampaikan rasa terima kasih yang sebesar-besarnya atas semua ilmu, waktu, arahan, pengorbanan, dan dedikasi yang telah Abang berikan kepada saya dan tim selama ini. Semua bimbingan dan pengalaman yang Abang bagikan tentu menjadi bekal yang sangat bernilai buat saya ke depannya.
+                </p>
+
+                <!-- Polaroid 4 - Kiri Tengah 2 -->
+                <div class="polaroid-float float-polaroid-left -rotate-3 bg-slate-950 border border-blue-500/40 p-2 rounded-xl w-32 sm:w-40 md:w-48">
+                    <div class="tape-effect -top-2.5 left-1/2 -translate-x-1/2 rotate-3"></div>
+                    <div class="aspect-square bg-slate-800 rounded-lg overflow-hidden mb-1 relative">
+                        <img id="img-polaroid-4" src="https://placehold.co/400x400/1e293b/60a5fa?text=Foto+4" alt="Foto 4" class="w-full h-full object-cover">
+                    </div>
+                    <p id="caption-polaroid-4" class="font-handwriting text-center text-blue-300 text-xs sm:text-sm truncate">Sukses Acara 🎉</p>
+                </div>
+
+                <p>
+                    Pesan saya untuk Abang, tetaplah menjadi pribadi yang rendah hati, bijaksana, serta terus memberikan dampak positif dan menginspirasi banyak orang di mana pun Abang berada. Jangan pernah ragu dengan potensi yang Abang miliki, karena Abang adalah sosok yang luar biasa dan punya kepemimpinan yang hebat.
+                </p>
+
+                <!-- Polaroid 5 - Kanan Tengah 2 -->
+                <div class="polaroid-float float-polaroid-right rotate-3 bg-slate-950 border border-blue-500/40 p-2 rounded-xl w-32 sm:w-40 md:w-48">
+                    <div class="tape-effect -top-2.5 left-1/2 -translate-x-1/2 -rotate-3"></div>
+                    <div class="aspect-square bg-slate-800 rounded-lg overflow-hidden mb-1 relative">
+                        <img id="img-polaroid-5" src="https://placehold.co/400x400/1e293b/60a5fa?text=Foto+5" alt="Foto 5" class="w-full h-full object-cover">
+                    </div>
+                    <p id="caption-polaroid-5" class="font-handwriting text-center text-blue-300 text-xs sm:text-sm truncate">Kebersamaan 💙</p>
+                </div>
+
+                <p>
+                    Dari lubuk hati yang paling dalam, saya mendoakan yang terbaik untuk setiap langkah dan perjuangan Abang selanjutnya, khususnya di dunia pendidikan. Semoga Bang Calvin selalu diberikan kesehatan, kekuatan, serta kelancaran dan kemudahan oleh Tuhan dalam menempuh jenjang pendidikan yang lebih tinggi.
+                </p>
+
+                <!-- Polaroid 6 - Kiri Tengah 3 -->
+                <div class="polaroid-float float-polaroid-left rotate-2 bg-slate-950 border border-blue-500/40 p-2 rounded-xl w-32 sm:w-40 md:w-48">
+                    <div class="tape-effect -top-2.5 left-1/2 -translate-x-1/2 -rotate-2"></div>
+                    <div class="aspect-square bg-slate-800 rounded-lg overflow-hidden mb-1 relative">
+                        <img id="img-polaroid-6" src="https://placehold.co/400x400/1e293b/60a5fa?text=Foto+6" alt="Foto 6" class="w-full h-full object-cover">
+                    </div>
+                    <p id="caption-polaroid-6" class="font-handwriting text-center text-blue-300 text-xs sm:text-sm truncate">Semangat ITB 🎓</p>
+                </div>
+
+                <p>
+                    Saya sangat berharap dan mendoakan agar seluruh target, impian, dan cita-cita besar Abang—termasuk langkah Abang menuju universitas impian (<span class="text-blue-400 font-semibold underline decoration-blue-500/50">Vincensius ITB '27</span>)—bisa terwujud dengan hasil yang paling memuaskan.
+                </p>
+
+                <!-- Polaroid 7 - Kanan Bawah -->
+                <div class="polaroid-float float-polaroid-right -rotate-2 bg-slate-950 border border-blue-500/40 p-2 rounded-xl w-32 sm:w-40 md:w-48">
+                    <div class="tape-effect -top-2.5 left-1/2 -translate-x-1/2 rotate-2"></div>
+                    <div class="aspect-square bg-slate-800 rounded-lg overflow-hidden mb-1 relative">
+                        <img id="img-polaroid-7" src="https://placehold.co/400x400/1e293b/60a5fa?text=Foto+7" alt="Foto 7" class="w-full h-full object-cover">
+                    </div>
+                    <p id="caption-polaroid-7" class="font-handwriting text-center text-blue-300 text-xs sm:text-sm truncate">Kenangan OSIS 🌟</p>
+                </div>
+
+                <p>
+                    Terima kasih atas segalanya ya Bang, sukses selalu untuk masa depan dan perjalanan selanjutnya. See you on top, Bang Calvin!
+                </p>
+
+                <!-- Polaroid 8 - Kiri Bawah -->
+                <div class="polaroid-float float-polaroid-left -rotate-3 bg-slate-950 border border-blue-500/40 p-2 rounded-xl w-32 sm:w-40 md:w-48">
+                    <div class="tape-effect -top-2.5 left-1/2 -translate-x-1/2 -rotate-1"></div>
+                    <div class="aspect-square bg-slate-800 rounded-lg overflow-hidden mb-1 relative">
+                        <img id="img-polaroid-8" src="https://placehold.co/400x400/1e293b/60a5fa?text=Foto+8" alt="Foto 8" class="w-full h-full object-cover">
+                    </div>
+                    <p id="caption-polaroid-8" class="font-handwriting text-center text-blue-300 text-xs sm:text-sm truncate">See You On Top 🚀</p>
+                </div>
+
+                <div class="clear-both"></div>
+
+            </div>
 
             <!-- Penutup / Tanda Tangan -->
-            <footer class="pt-6 border-t border-blue-800/30 text-right">
-                <p class="text-xs md:text-sm text-blue-300/80 italic">Salam hangat dan doa terbaik,</p>
-                <p class="font-handwriting text-2xl md:text-3xl text-blue-400 font-bold mt-1">Oryza Pranantha Ginting</p>
+            <footer class="pt-6 border-t border-blue-800/40 text-right relative z-10 mt-6 clear-both">
+                <p class="text-xs sm:text-sm text-blue-300/90 italic">Salam hangat dan doa terbaik,</p>
+                <p class="font-handwriting text-2xl sm:text-3xl text-blue-400 font-bold mt-1">Oryza Pranantha Ginting</p>
             </footer>
 
         </article>
+
     </div>
 
-    <!-- SCRIPT CONTROL AUDIO -->
+    <!-- SCRIPT CONFIGURASI FOTO & AUDIO -->
     <script>
+        // DATA FOTO POLAROID SCRAPBOOK (Ganti nama file foto disini)
+        const polaroidData = [
+            { id: 1, imageSrc: "foto1.jpg", caption: "Momen Pertama 📸" },
+            { id: 2, imageSrc: "foto2.jpg", caption: "Diskusi Proker 📝" },
+            { id: 3, imageSrc: "foto3.jpg", caption: "Rapat Tim ✨" },
+            { id: 4, imageSrc: "foto4.jpg", caption: "Sukses Acara 🎉" },
+            { id: 5, imageSrc: "foto5.jpg", caption: "Kebersamaan 💙" },
+            { id: 6, imageSrc: "foto6.jpg", caption: "Semangat ITB 🎓" },
+            { id: 7, imageSrc: "foto7.jpg", caption: "Kenangan OSIS 🌟" },
+            { id: 8, imageSrc: "foto8.jpg", caption: "See You On Top 🚀" }
+        ];
+
+        document.addEventListener("DOMContentLoaded", () => {
+            polaroidData.forEach(item => {
+                const imgEl = document.getElementById(`img-polaroid-${item.id}`);
+                const captionEl = document.getElementById(`caption-polaroid-${item.id}`);
+
+                if (imgEl && item.imageSrc) {
+                    imgEl.onerror = () => {
+                        // Fallback jika file gambar lokal belum dimasukkan
+                        imgEl.src = `https://placehold.co/400x400/1e293b/60a5fa?text=Foto+${item.id}`;
+                    };
+                    imgEl.src = item.imageSrc;
+                }
+
+                if (captionEl && item.caption) {
+                    captionEl.innerText = item.caption;
+                }
+            });
+        });
+
+        // KONTROL AUDIO MUSIC PLAYER
         const audio = document.getElementById('bgMusic');
         const playIcon = document.getElementById('playIcon');
         const pauseIcon = document.getElementById('pauseIcon');
@@ -96,17 +273,16 @@
                 audio.play().then(() => {
                     playIcon.classList.add('hidden');
                     pauseIcon.classList.remove('hidden');
-                    tooltipText.innerText = "Hentikan Musik";
+                    tooltipText.innerText = "Hentikan Musik ⏸️";
                     pingEffect.classList.remove('hidden');
                 }).catch(err => {
                     console.log("Audio play failed:", err);
-                    alert("Gagal memutar audio. Pastikan file 'musik-anda.mp3' sudah berada di folder yang sama!");
                 });
             } else {
                 audio.pause();
                 playIcon.classList.remove('hidden');
                 pauseIcon.classList.add('hidden');
-                tooltipText.innerText = "Putar Musik";
+                tooltipText.innerText = "Putar Musik 🎵";
                 pingEffect.classList.add('hidden');
             }
         }
@@ -114,3 +290,4 @@
 
 </body>
 </html>
+```
